@@ -75,15 +75,18 @@ public class Interrogazioni {
 
 	
 	/** Questo Metodo Genera La Lista Di Sorteggiati **/
-	public void Sorteggiati() {
+	public void Sorteggio() {
 		ArrayList<Studente> copia_studenti = this.studenti;
+		this.studenti_sorteggiati = new ArrayList<Studente>();
 		Random rand = new Random();
-		for(int i  = 0;i<copia_studenti.size()-1;i++) {
-			
+		int sorteggiato;
+		for(int i  = copia_studenti.size()-1;i>=0;i--) {
+			sorteggiato = rand.nextInt((i - 0) + 1) + 0;
+			this.studenti_sorteggiati.add(copia_studenti.get(sorteggiato));
+			copia_studenti.remove(sorteggiato);
 		}
 	}
 	
-
 	/** Questo Metodo Stampa Gli Utenti **/
 	public void StampaUtenti() {
 		
@@ -100,8 +103,14 @@ public class Interrogazioni {
 			// Creare Attributi Per I Sostituti
 	}
 	
+	public static void main(String[] args) {
+		Interrogazioni prova = new Interrogazioni(4);
+		prova.addStudente(new Studente("Becchi","Federico","Inglese","4AINF"));
+		prova.addStudente(new Studente("Becchi","Federice","Inglese","4AINF"));
+		prova.addStudente(new Studente("Becchi","Federicaa","Inglese","4AINF"));
+		prova.addStudente(new Studente("Becchi","Federicai","Inglese","4AINF"));
+		prova.Sorteggio();
 	
-	
-	
+	}
 	
 }
