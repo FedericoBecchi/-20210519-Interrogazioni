@@ -1,6 +1,6 @@
 package Studente;
 
-public class Persona {
+abstract class Persona {
 
 	/** Nome Persona **/
 	protected String nome;
@@ -27,4 +27,6 @@ public class Persona {
 	public void setCognome(String cognome) {
 		this.cognome = cognome;
 	}
+	
+	abstract boolean isStessaPersona(Persona seconda_persona);
 }
