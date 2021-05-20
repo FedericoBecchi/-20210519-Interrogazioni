@@ -6,19 +6,43 @@ public class Interrogazioni {
 	
 	/** Numero di persone della lista**/
 	private int n_persone;
+	
+	/** Numero di studenti per sessione**/
+	private int n_studenti_sessione;
+	
+	/** Nummero di sessioni **/
+	private int n_sessioni;
 
 	/** Lista Utenti  **/
 	 private ArrayList<Studente> studenti;
 	
 	/** Lista Utenti  **/
 	 private ArrayList<Studente> studenti_sorteggiati;
+	 
+	 /** Contiene la lista di date **/
+	 private ArrayList<String> date_sessione;
 	
-	public Interrogazioni(int n_interrogati) {
+	public Interrogazioni(int n_interrogati,int n_studenti_sessioni,int n_sessioni) {
 		this.n_persone = n_interrogati;
+		this.n_sessioni = n_sessioni;
+		this.n_studenti_sessione = n_studenti_sessioni;
 		this.studenti = new ArrayList<Studente>();
 		this.studenti_sorteggiati = new ArrayList<Studente>();
+		this.date_sessione = new ArrayList<String>();
 	}
 	
+	public int getN_studenti_sessione() {
+		return n_studenti_sessione;
+	}
+
+	public void setN_studenti_sessione(int n_studenti_sessione) {
+		this.n_studenti_sessione = n_studenti_sessione;
+	}
+
+	public void setStudenti(ArrayList<Studente> studenti) {
+		this.studenti = studenti;
+	}
+
 	public int getN_persone() {
 		return n_persone;
 	}
@@ -48,7 +72,7 @@ public class Interrogazioni {
 		}
 		return null;
 	}
-
+ 
 
 	public void addStudente(Studente nuovo_studente) {
 		if((this.studenti.size()<this.n_persone)&&!IsStudenteInArrayList(nuovo_studente,this.studenti)) {
@@ -67,8 +91,35 @@ public class Interrogazioni {
 	}
 	
 	public Studente getStudenteSorteggiatoIndex(int index) {
-		if(index>0&&index<this.studenti_sorteggiati.size()) {
+		if(index>=0&&index<this.studenti_sorteggiati.size()) {
 			return studenti_sorteggiati.get(index);
+		}
+		return null;
+	}
+	
+	/** Restituisce true se l'elemento è contenuto nell'array **/
+	public boolean isStessaDataInArray(String data,ArrayList<String> array) {
+		for(int i = 0;i<array.size();i++) {
+			if(data.equals(array.get(i))){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public ArrayList<String> getDate() {
+		return this.date_sessione;
+	}
+
+	public void addData(String data) {
+		if((this.date_sessione.size()<this.n_sessioni)&&!isStessaDataInArray(data,this.date_sessione)) {
+			this.date_sessione.add(data);
+		}
+	}
+	
+	public String getDataIndex(int index) {
+		if(index>=0&&index<this.date_sessione.size()) {
+			return date_sessione.get(index);
 		}
 		return null;
 	}
@@ -87,30 +138,46 @@ public class Interrogazioni {
 		}
 	}
 	
-	/** Questo Metodo Stampa Gli Utenti **/
-	public void StampaUtenti() {
-		
+	/** Questo Metodo Crea Una Stringa con gli utenti sorteggiati **/
+	public String ArchiviaUtenti() {
+		String ritorno = "";
+		/** Valore Per Stabilire il giusto studente da stampare **/
+		int j = 0;
+		for(int i = 0;i<this.n_sessioni;i++) {
+			ritorno += this.getDataIndex(i);
+			for(int k = j ;k<=this.n_studenti_sessione;k++) {
+				ritorno += "\n"+this.getStudenteSorteggiatoIndex(k).getCognome();
+				j = k;
+			}
+			ritorno += "\n";
+		}
+		return ritorno;
 	}
 	
 	/** Questo Metodo Gestisce Le Date **/
-	public void GestisciData() {
-		// Come Posso Gestire Le Date
-		// Ipotesi 
-		// Gestire Con ArrayListi di  String
-			// Creare Attributo ArrayList String
-			// Esiste La Classe Data per ottenere la data corrente
-			// Creare Attributo Int Giorni Di Interrogazionu
-			// Creare Attributi Per I Sostituti
-	}
+//	public void GestisciData() {
+//		 Come Posso Gestire Le Date
+//		 Ipotesi 
+//		 Gestire Con ArrayListi di  String
+//			 Creare Attributo ArrayList String
+//			 Esiste La Classe Data per ottenere la data corrente
+//			 Creare Attributo Int Giorni Di Interrogazionu
+//			 Creare Attributi Per I Sostituti
+//  }
 	
 	public static void main(String[] args) {
-		Interrogazioni prova = new Interrogazioni(4);
+		Interrogazioni prova = new Interrogazioni(5,4,1);
+		prova.addStudente(new Studente("Ferioli","Andrea","Inglese","4AINF"));
 		prova.addStudente(new Studente("Becchi","Federico","Inglese","4AINF"));
-		prova.addStudente(new Studente("Becchi","Federice","Inglese","4AINF"));
-		prova.addStudente(new Studente("Becchi","Federicaa","Inglese","4AINF"));
-		prova.addStudente(new Studente("Becchi","Federicai","Inglese","4AINF"));
+		prova.addStudente(new Studente("Zhu","Massimo","Inglese","4AINF"));
+		prova.addStudente(new Studente("Mazza","GianMarco","Inglese","4AINF"));
+		prova.addStudente(new Studente("Perazzoli","Davide","Inglese","4AINF"));
+		
+		prova.addData("3 Maggio");
+		prova.addData("4 Maggio");
+		
 		prova.Sorteggio();
-	
+		System.out.println(prova.ArchiviaUtenti());
 	}
 	
 }
